@@ -10,7 +10,7 @@ clear;
 subject = 123; 
 n_cropped_TRs = 10; %nTRs to crop from beginning and end
 AFNI_data_type = 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2'; %v1_original_regressors, v2_jamals_regressors, v3_jamals_regressors_smoothing=1, v4_jamals_regressors_smoothing=1_defaultGMmask, v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3, v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2, v7_15_regressors_no_smoothing_defaultGMmask_polort=2  
-Python_data_type = 'HPF=.01Hz'; %HPF=.01Hz, HPF=.03Hz, HPF=.06Hz
+Python_data_type = 'HPF=.03Hz'; %HPF=.01Hz, HPF=.03Hz, HPF=.06Hz
 all_subjects = [103 105 108 115 117 120 121 122 123]; whichSubject = find(all_subjects==subject);
 groups = {'AM', 'M', 'M', 'AM', 'M', 'AM', 'M', 'M', 'AM'}; group = groups{whichSubject};
 
