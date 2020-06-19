@@ -8,10 +8,10 @@
 %scrambles?
 
 clear;
-subject = 105;
+subject = 123;
 
 preproc_type = 'Python'; %'AFNI', 'Python'
-preproc_params = 'HPF=.03Hz'; 
+preproc_params = 'HPF=.06Hz'; 
 %AFNI parameter choices:
 %v1_original_regressors
 %v2_jamals_regressors
@@ -92,8 +92,12 @@ for ROI = 1:nROIs
 
 end
 
-figsize = [100 100 400 500];
+if strcmp(preproc_type, 'AFNI')
+    figsize = [100 100 400 500];
+elseif strcmp(preproc_type, 'Python')
+    figsize = [100 100 400 350];
+end
+
 figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
 print(gcf, '-dtiff', ['../figures/Correlation classifier/sub-' num2str(subject) '_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
-
 
