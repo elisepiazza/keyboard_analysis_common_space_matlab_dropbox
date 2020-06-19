@@ -4,19 +4,26 @@
 
 clear;
 group = 'AM';
-preproc_type = 'AFNI'; %'AFNI', 'Python'
-preproc_params = 'v4_jamals_regressors_smoothing=1_defaultGMmask'; 
-%AFNI parameter choices:
-%v1_original_regressors
-%v2_jamals_regressors
-%v3_jamals_regressors_smoothing=1
-%v4_jamals_regressors_smoothing=1_defaultGMmask
-%v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3
-%v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2
-%v7_15_regressors_no_smoothing_defaultGMmask_polort=2 
-%Python parameter choices:
-%HPF=.01Hz, HPF=.03Hz, HPF=.06Hz
-n_cropped_TRs = 10;
+
+preproc_types = {'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'Python', 'Python', 'Python'};
+preproc_params = {'v1_original_regressors', 'v2_jamals_regressors', 'v3_jamals_regressors_smoothing=1', ...
+    'v4_jamals_regressors_smoothing=1_defaultGMmask', 'v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3', ...
+    'v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2', 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2', ...
+    'HPF=.01Hz', 'HPF=.03Hz', 'HPF=.06Hz'};
+
+% preproc_type = 'Python'; %'AFNI', 'Python'
+% preproc_params = 'HPF=.01Hz'; 
+% %AFNI parameter choices:
+% %v1_original_regressors
+% %v2_jamals_regressors
+% %v3_jamals_regressors_smoothing=1
+% %v4_jamals_regressors_smoothing=1_defaultGMmask
+% %v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3
+% %v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2
+% %v7_15_regressors_no_smoothing_defaultGMmask_polort=2 
+% %Python parameter choices:
+% %HPF=.01Hz, HPF=.03Hz, HPF=.06Hz
+n_cropped_TRs = 0;
 
 all_subjects = [103 105 115 117 120 121 122 123]; 
 groups = {'AM', 'M', 'AM', 'M', 'AM', 'M', 'M', 'AM'}; subjects = all_subjects(find(strcmp(groups,group))); nSubs = length(subjects);
