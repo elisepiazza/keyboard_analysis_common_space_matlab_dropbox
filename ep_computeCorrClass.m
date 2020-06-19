@@ -8,10 +8,10 @@
 %scrambles?
 
 clear;
-subject = 123;
+subject = 103;
 
-preproc_type = 'Python'; %'AFNI', 'Python'
-preproc_params = 'HPF=.06Hz'; 
+preproc_type = 'AFNI'; %'AFNI', 'Python'
+preproc_params = 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2'; 
 %AFNI parameter choices:
 %v1_original_regressors
 %v2_jamals_regressors
