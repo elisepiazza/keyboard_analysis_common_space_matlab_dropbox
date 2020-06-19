@@ -15,7 +15,6 @@ preproc_params = {'v1_original_regressors', 'v2_jamals_regressors', 'v3_jamals_r
     'v4_jamals_regressors_smoothing=1_defaultGMmask', 'v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3', ...
     'v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2', 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2', ...
     'HPF=.01Hz', 'HPF=.03Hz', 'HPF=.06Hz'};
-
 n_cropped_TRs = 10;
 
 for p = 1:length(preproc_types)
