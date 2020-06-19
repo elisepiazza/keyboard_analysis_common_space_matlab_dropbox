@@ -3,9 +3,19 @@
 %compute inter-subject correlation between the subjects' ROI-avg'd time series
 
 clear;
-group = 'M';
+group = 'AM';
 preproc_type = 'AFNI'; %'AFNI', 'Python'
-AFNI_data_type = 'v2_jamals_regressors'; %v1_original_regressors, v2_jamals_regressors, v3_jamals_regressors_smoothing=1, v4_jamals_regressors_smoothing=1_defaultGMmask
+preproc_params = 'v4_jamals_regressors_smoothing=1_defaultGMmask'; 
+%AFNI parameter choices:
+%v1_original_regressors
+%v2_jamals_regressors
+%v3_jamals_regressors_smoothing=1
+%v4_jamals_regressors_smoothing=1_defaultGMmask
+%v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3
+%v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2
+%v7_15_regressors_no_smoothing_defaultGMmask_polort=2 
+%Python parameter choices:
+%HPF=.01Hz, HPF=.03Hz, HPF=.06Hz
 n_cropped_TRs = 10;
 
 all_subjects = [103 105 115 117 120 121 122 123]; 
@@ -16,12 +26,12 @@ conditions = {'1B', '2B', '8B', 'I'}; nCond = length(conditions);
 if strcmp(preproc_type, 'AFNI')
     ROIs = {'AngularG', 'Cerebellum', 'HeschlsG', 'STG', 'MotorCortex', ...
     'TPJ', 'PCC', 'Precuneus', 'A1', 'mPFC'};
-    filepath = ['../../common_space_AFNI/reshaped_by_conditions/' AFNI_data_type '/sub-'];
+    filepath = ['../../common_space_AFNI/reshaped_by_conditions/' preproc_params '/sub-'];
     barcolor = [.9 .5 0];
 
 elseif strcmp(preproc_type, 'Python')
     ROIs = {'A1', 'AngularGyrus', 'Erez-DMN', 'Precuneus', 'vmPFC'};
-    filepath = '../../common_space_Python/reshaped_by_conditions/sub-';
+    filepath = ['../../common_space_Python/reshaped_by_conditions/' preproc_params '/sub-'];
     barcolor = [.3 .5 .9];
 end
 
@@ -80,6 +90,6 @@ for ROI = 1:nROIs
     
     xticklab = conditions;
     xlabel('Condition'); ylabel('ISC by condition (r)'); title([ROIs{ROI}]); xlim([.3 4.7]); ylim([0 .6]); set(gca, 'XTickLabel', conditions, 'FontSize', 16, 'FontName', 'Helvetica');
-    print(gcf, '-dtiff', ['../figures/ISC by condition, ' group ' group, (' ROIs{ROI} ')_' preproc_type '_' AFNI_data_type '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+    print(gcf, '-dtiff', ['../figures/ISC/ISC by condition, ' group ' group, (' ROIs{ROI} ')_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 end
