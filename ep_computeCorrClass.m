@@ -8,17 +8,29 @@
 %scrambles?
 
 clear;
-subject = 123;
+subject = 105;
 
-data_type = 'v2_jamals_regressors'; %v1_original_regressors, v2_jamals_regressors, v3_jamals_regressors_smoothing=1, v4_jamals_regressors_smoothing=1_defaultGMmask, v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3, v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2, v7_15_regressors_no_smoothing_defaultGMmask_polort=2 
-load(['../reshaped_by_conditions/' data_type '/sub-' num2str(subject) '.mat']);
+preproc_type = 'Python'; %'AFNI', 'Python'
+preproc_params = 'HPF=.03Hz'; 
+%AFNI parameter choices:
+%v1_original_regressors
+%v2_jamals_regressors
+%v3_jamals_regressors_smoothing=1
+%v4_jamals_regressors_smoothing=1_defaultGMmask
+%v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3
+%v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2
+%v7_15_regressors_no_smoothing_defaultGMmask_polort=2 
+%Python parameter choices:
+%HPF=.01Hz, HPF=.03Hz, HPF=.06Hz
+
+load(['../../common_space_' preproc_type '/reshaped_by_conditions/' preproc_params '/sub-' num2str(subject) '.mat']);
 n_scramble_cond = size(data_ROIavg_scramble,3); n_scramble_reps = size(data_ROIavg_scramble,4);
 choose = @(samples) samples(randi(numel(samples)));
 
 nROIs = length(ROIs);
 
 %Crop N TRs from beginning and end
-n_cropped_TRs = 0; 
+n_cropped_TRs = 10; 
 data_ROIavg_scramble = data_ROIavg_scramble(:,n_cropped_TRs+1:end-n_cropped_TRs,:,:);
 data_ROIavg_control = data_ROIavg_control(:,n_cropped_TRs+1:end-n_cropped_TRs,:,:);
 
@@ -82,20 +94,6 @@ end
 
 figsize = [100 100 400 500];
 figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-print(gcf, '-dtiff', ['../figures/sub-' num2str(subject) '/Corr classifier_' data_type '.tif']);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/sub-' num2str(subject) '_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
-%
-% %Plot corr classifier results across runs
-% N = length(held_out_runs);
-% x = 1;
-% y = mean(mean_acc);
-% errors = std(mean_acc)/sqrt(N);
-%
-% figsize = [100 100 300 375]; barwidth = .6; barcolor = [.5 0 .9];
-% figure('Units', 'pixels', 'Position', figsize);
-% bar(x,y,barwidth,'facecolor',barcolor); hold on;
-% errorbar(x,y,errors,'k.', 'LineWidth', 1)
-%
-% xlabel('Melody 1 vs. Melody 2'); ylabel('Mean accuracy across runs'); title(['Corr classifier (' ROI_names{whichROI} smooth_tags{smoothOrNot} ')']); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-% % print(gcf, '-dtiff', ['../figures/Corr classifier (' ROI_names{whichROI} smooth_tags{smoothOrNot} ').tif']);
 
