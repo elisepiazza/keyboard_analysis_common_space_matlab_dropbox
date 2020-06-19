@@ -96,15 +96,15 @@ for p = 1:length(preproc_types)
             
         end
         
-        %         %Generate a figure of classification accuracy (ROI x cond) for this subject
-        %         if strcmp(preproc_type, 'AFNI')
-        %             figsize = [100 100 400 500];
-        %         elseif strcmp(preproc_type, 'Python')
-        %             figsize = [100 100 400 350];
-        %         end
-        %
-        %         figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-        %         print(gcf, '-dtiff', ['../figures/CC/sub-' num2str(subject) '_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        %Generate a figure of classification accuracy (ROI x cond) for this subject
+        if strcmp(preproc_type, 'AFNI')
+            figsize = [100 100 400 500];
+        elseif strcmp(preproc_type, 'Python')
+            figsize = [100 100 400 350];
+        end
+        
+        figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
+        print(gcf, '-dtiff', ['../figures/CC/sub-' num2str(subject) '_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
         avg_acc(s,p) = mean(mean(ROI_acc));
     end
