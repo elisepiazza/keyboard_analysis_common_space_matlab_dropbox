@@ -6,15 +6,27 @@
 clear;
 subject = 103;
 
-data_type = 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2';
-load(['../reshaped_by_conditions/' data_type '/sub-' num2str(subject) '.mat']);
+preproc_type = 'Python'; %'AFNI', 'Python'
+preproc_params = 'HPF=.06Hz'; 
+%AFNI parameter choices:
+%v1_original_regressors
+%v2_jamals_regressors
+%v3_jamals_regressors_smoothing=1
+%v4_jamals_regressors_smoothing=1_defaultGMmask
+%v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3
+%v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2
+%v7_15_regressors_no_smoothing_defaultGMmask_polort=2 
+%Python parameter choices:
+%HPF=.01Hz, HPF=.03Hz, HPF=.06Hz
+
+load(['../../common_space_' preproc_type '/reshaped_by_conditions/' preproc_params '/sub-' num2str(subject) '.mat']);
 n_scramble_cond = size(data_ROIavg_scramble,3); n_scramble_reps = size(data_ROIavg_scramble,4);
 choose = @(samples) samples(randi(numel(samples)));
 
 nROIs = length(ROIs);
 
 %Crop N TRs from beginning and end
-n_cropped_TRs = 0; 
+n_cropped_TRs = 10; 
 data_ROIavg_scramble = data_ROIavg_scramble(:,n_cropped_TRs+1:end-n_cropped_TRs,:,:);
 data_ROIavg_control = data_ROIavg_control(:,n_cropped_TRs+1:end-n_cropped_TRs,:,:);
 
@@ -54,51 +66,20 @@ for ROI = 1:nROIs
     
     IRC_real_mat_scramble(ROI,:) = mean(IRC_real);
     IRC_rand_mat_scramble(ROI,:) = mean(IRC_rand);
-    
-    
-%     %Plot ISC for scramble conditions
-%     N = 3;
-%     x = 1:4;
-%     y = nanmean(ISC(:,1:4));
-%     errors = nanstd(ISC(:,1:4))/sqrt(N);
-%     
-%     figsize = [100 100 400 375]; barwidth = .5; barcolor = [.9 .5 0];
-%     figure('Units', 'pixels', 'Position', figsize);
-%     bar(x,y,barwidth,'facecolor', barcolor); hold on;
-%     errorbar(x,y,errors,'k.', 'LineWidth', 1)
-%     
-%     xticklab = conditions;
-%     xlabel('Condition'); ylabel('Cross-rep ISC by condition (r)'); title([ROIs{ROI}]); xlim([.3 7.7]); ylim([0 .6]); set(gca, 'XTickLabel', xticklab, 'FontSize', 16, 'FontName', 'Helvetica');
-%     % print(gcf, '-dtiff', ['../figures/s' num2str(subject) '/Cross-rep ISC by condition (' ROIs{ROI} smooth_tags{smoothOrNot} ').tif']);
-%     
-%     %Plot ISC for all conditions
-%     N = nReps;
-%     x = 1:4;
-%     y = nanmean(ISC_rand(:,1:4));
-%     errors = nanstd(ISC_rand(:,1:4))/sqrt(N);
-%     
-%     figsize = [100 100 400 375]; barwidth = .5; barcolor = [.5 .9 0];
-%     figure('Units', 'pixels', 'Position', figsize);
-%     bar(x,y,barwidth,'facecolor', barcolor); hold on;
-%     errorbar(x,y,errors,'k.', 'LineWidth', 1)
-%     
-%     xticklab = conditions;
-%     xlabel('Condition'); ylabel('Cross-cond, cross-rep ISC by condition (r)'); title([ROIs{ROI}]); xlim([.3 7.7]); ylim([0 .6]); set(gca, 'XTickLabel', xticklab, 'FontSize', 16, 'FontName', 'Helvetica');
-%     
+     
 end
 
-figsize = [100 100 400 500]; figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_real_mat_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-print(gcf, '-dtiff', ['../figures/sub-' num2str(subject) '/Inter-rep, within-condition correlation_' data_type '.tif']);
 
+if strcmp(preproc_type, 'AFNI')
+    figsize = [100 100 400 500];
+elseif strcmp(preproc_type, 'Python')
+    figsize = [100 100 400 350];
+end
 
-figsize = [100 100 400 500]; figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-print(gcf, '-dtiff', ['../figures/sub-' num2str(subject) '/Inter-rep, between-condition correlation_' data_type '.tif']);
+figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_real_mat_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
+print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, within-condition correlation_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
-
-% %Plot ISC for each successive run for melody 1, melody 2
-% figure('Units', 'pixels', 'Position', [100 100 900 375]);
-% subplot(1,2,1); plot(corr_melody1, 'bo', 'MarkerSize', 16, 'MarkerFaceColor', 'b'); xlim([0 6]); title([ROI_names{whichROI} smooth_tags{smoothOrNot} ' (Melody 1)']); xlabel('Run'); ylabel('ISC (btwn this run and others)'); set(gca, 'FontSize', 16);
-% subplot(1,2,2); plot(corr_melody2, 'bo', 'MarkerSize', 16, 'MarkerFaceColor', 'b'); xlim([0 6]); title([ROI_names{whichROI} smooth_tags{smoothOrNot} ' (Melody 2)']); xlabel('Run'); ylabel('ISC (btwn this run and others'); set(gca, 'FontSize', 16);
-% print(gcf, '-dtiff', ['../figures/ISC by run (' ROI_names{whichROI} smooth_tags{smoothOrNot} ').tif']);
+figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
+print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_' '_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
