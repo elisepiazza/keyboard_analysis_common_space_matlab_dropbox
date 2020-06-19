@@ -125,6 +125,3 @@ xticklab = preproc_params;
 xlabel('Preprocessing Param Type'); ylabel('Correlation classifier accuracy (% correct)'); xlim([.3 10.7]); ylim([0 1]); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
 print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary stats_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
-
-
-
