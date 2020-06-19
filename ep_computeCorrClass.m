@@ -15,7 +15,10 @@ preproc_params = {'v1_original_regressors', 'v2_jamals_regressors', 'v3_jamals_r
     'v4_jamals_regressors_smoothing=1_defaultGMmask', 'v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3', ...
     'v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2', 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2', ...
     'HPF=.01Hz', 'HPF=.03Hz', 'HPF=.06Hz'};
+
 n_cropped_TRs = 10;
+
+avg_acc = zeros(nSubs, length(preproc_types));
 
 for p = 1:length(preproc_types)
     
@@ -93,19 +96,35 @@ for p = 1:length(preproc_types)
             
         end
         
-        %Generate a figure of classification accuracy (ROI x cond) for this subject 
-        if strcmp(preproc_type, 'AFNI')
-            figsize = [100 100 400 500];
-        elseif strcmp(preproc_type, 'Python')
-            figsize = [100 100 400 350];
-        end
+        %         %Generate a figure of classification accuracy (ROI x cond) for this subject
+        %         if strcmp(preproc_type, 'AFNI')
+        %             figsize = [100 100 400 500];
+        %         elseif strcmp(preproc_type, 'Python')
+        %             figsize = [100 100 400 350];
+        %         end
+        %
+        %         figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
+        %         print(gcf, '-dtiff', ['../figures/CC/sub-' num2str(subject) '_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
-        figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-        print(gcf, '-dtiff', ['../figures/CC/sub-' num2str(subject) '_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
-        
-%         avg_acc(p,s) = mean(mean(ROI_acc));
+        avg_acc(s,p) = mean(mean(ROI_acc));
     end
     
 end
+
+%Generate a figure of overall classification accuracy (subject x preproc combo)
+y = mean(avg_acc);
+errors = std(avg_acc)/sqrt(nSubs);
+x = 1:length(preproc_types);
+
+figsize = [100 100 600 400]; barwidth = .5;
+figure('Units', 'pixels', 'Position', figsize);
+bar(x,y,barwidth,'facecolor', [.2 .8 .9]); hold on;
+errorbar(x,y,errors,'k.', 'LineWidth', 1)
+
+xticklab = preproc_params;
+xlabel('Preprocessing Param Type'); ylabel('Correlation classifier accuracy (% correct)'); xlim([.3 10.7]); ylim([0 1]); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary stats_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+
+
 
 
