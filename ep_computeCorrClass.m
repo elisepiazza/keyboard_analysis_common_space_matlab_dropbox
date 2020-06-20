@@ -106,12 +106,13 @@ for p = 1:length(preproc_types)
         figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
         print(gcf, '-dtiff', ['../figures/CC/sub-' num2str(subject) '_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
+        %Average classification accuracy across ROIs/conditions (subject x preproc combo)
         avg_acc(s,p) = mean(mean(ROI_acc));
     end
     
 end
 
-%Generate a figure of overall classification accuracy (subject x preproc combo)
+%Plot avg classification accuracy across subjects, for each preproc combo
 y = mean(avg_acc);
 errors = std(avg_acc)/sqrt(nSubs);
 x = 1:length(preproc_types);
