@@ -127,10 +127,10 @@ for p = 1:length(preproc_types)
         
         %Plot IRC matrices (control conditions)
         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_real_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-        print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, within-condition correlation_control' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, within-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-        print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_control' '_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
         
         %Average IRC across ROIs/conditions (subject x preproc combo)
