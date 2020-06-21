@@ -14,8 +14,12 @@ preproc_params = {'v1_original_regressors', 'v2_jamals_regressors', 'v3_jamals_r
 
 n_cropped_TRs = 10;
 
-avg_corr_within = zeros(nSubs, length(preproc_types));
-avg_corr_between = zeros(nSubs, length(preproc_types));
+avg_corr_within_scramble = zeros(nSubs, length(preproc_types));
+avg_corr_between_scramble = zeros(nSubs, length(preproc_types));
+
+avg_corr_within_control = zeros(nSubs, length(preproc_types));
+avg_corr_between_control = zeros(nSubs, length(preproc_types));
+
 
 for p = 1:length(preproc_types)
     
