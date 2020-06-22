@@ -2,7 +2,10 @@
 %For each subject, for each ROI, for each of the 4 scrambled conditions,
 %make an averaged VxT matrix (loaf) across nRep-1 reps and hold out the remaining
 %one. For each held-out loaf, which of the 4 other conditions is it most correlated with? (Chance = .25)
-%Repeat for nReps
+%Repeat for nReps.
+
+%Note: since there is some randomness in which reps are held-out, this will
+%generate slightly different results across runs of the script. Add a random seed. 
 
 %TO ADD: in which areas is I_A more correlated w/ I than the other 3
 %scrambles?
@@ -32,7 +35,6 @@ for p = 1:length(preproc_types)
         load(['../../common_space_' preproc_type '/reshaped_by_conditions/' preproc_param '/sub-' num2str(subject) '.mat']);
         n_scramble_cond = size(data_ROIavg_scramble,3); n_scramble_reps = size(data_ROIavg_scramble,4);
         n_control_cond = size(data_ROIavg_control,3); n_control_reps = size(data_ROIavg_control,4);
-        choose = @(samples) samples(randi(numel(samples)));
         
         nROIs = length(ROIs);
         
@@ -76,20 +78,20 @@ for p = 1:length(preproc_types)
                 test_I = data_scramble_thisROI(:,:,4,test_rep);
                 
                 %Is train_1B most strongly correlated with its own held-out (test) loaf than the other 3?
-                R1 = corrcoef(train_1B(:,:),test_1B(:,:)); R2 = corrcoef(train_1B(:,:),test_I(:,:)); R3 = corrcoef(train_1B(:,:),test_8B(:,:)); R4 = corrcoef(train_1B(:,:),test_2B(:,:));
-                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_1B(i) = sum(acc1) == 3;
+                R1 = corrcoef(train_1B(:,:),test_1B(:,:)); R2 = corrcoef(train_1B(:,:),test_2B(:,:)); R3 = corrcoef(train_1B(:,:),test_8B(:,:)); R4 = corrcoef(train_1B(:,:),test_I(:,:));
+                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_1B(i) = sum(acc1) == n_scramble_reps;
                 
                 %Is train_2B most strongly correlated with its own held-out (test) loaf than the other 3?
-                R1 = corrcoef(train_2B(:,:),test_2B(:,:)); R2 = corrcoef(train_2B(:,:),test_I(:,:)); R3 = corrcoef(train_2B(:,:),test_8B(:,:)); R4 = corrcoef(train_2B(:,:),test_1B(:,:));
-                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_2B(i) = sum(acc1) == 3;
+                R1 = corrcoef(train_2B(:,:),test_2B(:,:)); R2 = corrcoef(train_2B(:,:),test_8B(:,:)); R3 = corrcoef(train_2B(:,:),test_I(:,:)); R4 = corrcoef(train_2B(:,:),test_1B(:,:));
+                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_2B(i) = sum(acc1) == n_scramble_reps;
                 
                 %Is train_8B most strongly correlated with its own held-out (test) loaf than the other 3?
-                R1 = corrcoef(train_8B(:,:),test_8B(:,:)); R2 = corrcoef(train_8B(:,:),test_I(:,:)); R3 = corrcoef(train_8B(:,:),test_2B(:,:)); R4 = corrcoef(train_8B(:,:),test_1B(:,:));
-                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_8B(i) = sum(acc1) == 3;
+                R1 = corrcoef(train_8B(:,:),test_8B(:,:)); R2 = corrcoef(train_8B(:,:),test_I(:,:)); R3 = corrcoef(train_8B(:,:),test_1B(:,:)); R4 = corrcoef(train_8B(:,:),test_2B(:,:));
+                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_8B(i) = sum(acc1) == n_scramble_reps;
                 
                 %Is train_1 most strongly correlated with its own held-out (test) loaf than the other 3?
-                R1 = corrcoef(train_I(:,:),test_I(:,:)); R2 = corrcoef(train_I(:,:),test_8B(:,:)); R3 = corrcoef(train_I(:,:),test_2B(:,:)); R4 = corrcoef(train_I(:,:),test_1B(:,:));
-                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_I(i) = sum(acc1) == 3;
+                R1 = corrcoef(train_I(:,:),test_I(:,:)); R2 = corrcoef(train_I(:,:),test_1B(:,:)); R3 = corrcoef(train_I(:,:),test_2B(:,:)); R4 = corrcoef(train_I(:,:),test_8B(:,:));
+                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_I(i) = sum(acc1) == n_scramble_reps;
             end
             
             ROI_acc_scramble(ROI,1) = mean(acc_1B);
@@ -124,17 +126,17 @@ for p = 1:length(preproc_types)
                 %Held-out I_I run (VxT)
                 test_I_I = data_control_thisROI(:,:,3,test_rep);
                                 
-                %Is train_I_N most strongly correlated with its own held-out (test) loaf than the other 3?
-                R1 = corrcoef(train_I_N(:,:),test_I_N(:,:)); R2 = corrcoef(train_I_N(:,:),test_I(:,:)); R3 = corrcoef(train_I_N(:,:),test_I_I(:,:)); R4 = corrcoef(train_I_N(:,:),test_I_A(:,:));
-                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_I_N(i) = sum(acc1) == 3;
+                %Is train_I_N most strongly correlated with its own held-out (test) loaf than the other 2?
+                R1 = corrcoef(train_I_N(:,:),test_I_N(:,:)); R2 = corrcoef(train_I_N(:,:),test_I_A(:,:)); R3 = corrcoef(train_I_N(:,:),test_I_I(:,:)); 
+                acc1 = R1(2,1) > [R2(2,1) R3(2,1)]; acc_I_N(i) = sum(acc1) == n_control_reps;
                 
-                %Is train_I_A most strongly correlated with its own held-out (test) loaf than the other 3?
-                R1 = corrcoef(train_I_A(:,:),test_I_A(:,:)); R2 = corrcoef(train_I_A(:,:),test_I(:,:)); R3 = corrcoef(train_I_A(:,:),test_I_I(:,:)); R4 = corrcoef(train_I_A(:,:),test_I_N(:,:));
-                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_I_A(i) = sum(acc1) == 3;
+                %Is train_I_A most strongly correlated with its own held-out (test) loaf than the other 2?
+                R1 = corrcoef(train_I_A(:,:),test_I_A(:,:)); R2 = corrcoef(train_I_A(:,:),test_I_I(:,:)); R3 = corrcoef(train_I_A(:,:),test_I_N(:,:)); 
+                acc1 = R1(2,1) > [R2(2,1) R3(2,1)]; acc_I_A(i) = sum(acc1) == n_control_reps;
                 
-                %Is train_I_I most strongly correlated with its own held-out (test) loaf than the other 3?
-                R1 = corrcoef(train_I_I(:,:),test_I_I(:,:)); R2 = corrcoef(train_I_I(:,:),test_I(:,:)); R3 = corrcoef(train_I_I(:,:),test_I_A(:,:)); R4 = corrcoef(train_I_I(:,:),test_I_N(:,:));
-                acc1 = R1(2,1) > [R2(2,1) R3(2,1) R4(2,1)]; acc_I_I(i) = sum(acc1) == 3;
+                %Is train_I_I most strongly correlated with its own held-out (test) loaf than the other 2?
+                R1 = corrcoef(train_I_I(:,:),test_I_I(:,:)); R2 = corrcoef(train_I_I(:,:),test_I_N(:,:)); R3 = corrcoef(train_I_I(:,:),test_I_A(:,:)); 
+                acc1 = R1(2,1) > [R2(2,1) R3(2,1)]; acc_I_I(i) = sum(acc1) == n_control_reps;
                 
             end
             
@@ -152,12 +154,12 @@ for p = 1:length(preproc_types)
         
         %Plot classification accuracy (ROI x cond) for this subject (scramble conditions)
         figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-        print(gcf, '-dtiff', ['../figures/CC/sub-' num2str(subject) '_scramble_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        print(gcf, '-dtiff', ['../figures/Correlation classifier/sub-' num2str(subject) '_scramble_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
 
         %Plot classification accuracy (ROI x cond) for this subject (control conditions)
         figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-        print(gcf, '-dtiff', ['../figures/CC/sub-' num2str(subject) '_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        print(gcf, '-dtiff', ['../figures/Correlation classifier/sub-' num2str(subject) '_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
         %Average classification accuracy across ROIs/conditions (subject x preproc combo)
         avg_acc_scramble(s,p) = mean(mean(ROI_acc_scramble));
@@ -178,7 +180,7 @@ errorbar(x,y,errors,'k.', 'LineWidth', 1)
 
 xticklab = preproc_params;
 xlabel('Preprocessing Param Type'); ylabel('Correlation classifier accuracy (% correct)'); xlim([.3 10.7]); ylim([0 1]); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-print(gcf, '-dtiff', ['../figures/CC/Summary stats_Scramble conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary stats_Scramble conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 %Plot avg classification accuracy across subjects, for each preproc combo (control condition)
@@ -193,4 +195,4 @@ errorbar(x,y,errors,'k.', 'LineWidth', 1)
 
 xticklab = preproc_params;
 xlabel('Preprocessing Param Type'); ylabel('Correlation classifier accuracy (% correct)'); xlim([.3 10.7]); ylim([0 1]); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-print(gcf, '-dtiff', ['../figures/CC/Summary stats_Control conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary stats_Control conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
