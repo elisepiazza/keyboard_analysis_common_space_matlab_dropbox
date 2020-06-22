@@ -125,12 +125,12 @@ for p = 1:length(preproc_types)
 %         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
 %         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_scramble' '_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
-        %Plot IRC matrices (control conditions)
-        figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_real_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-        print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, within-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
-        
-        figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-        print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+%         %Plot IRC matrices (control conditions)
+%         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_real_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
+%         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, within-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+%         
+%         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
+%         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
         
         %Average IRC across ROIs/conditions (subject x preproc combo)
@@ -142,6 +142,15 @@ for p = 1:length(preproc_types)
         
     end
 end
+
+%Plot IRC (subject x preproc combo)
+figsize = [100 100 1000 800]; 
+figure('Units', 'pixels', 'Position', figsize);
+subplot(2,2,1); imagesc(avg_corr_within_scramble); title('Within-cond ISC (scramble conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
+subplot(2,2,2); imagesc(avg_corr_within_control);  title('Within-cond ISC (control conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
+subplot(2,2,3); imagesc(avg_corr_between_scramble); title('Between-cond ISC (scramble conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
+subplot(2,2,4); imagesc(avg_corr_between_control);  title('Between-cond ISC (control conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
+print(gcf, '-dtiff', ['../figures/IRC/Summary by subject_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 %Plot avg IRC across subjects, for each preproc combo (scramble conditions)
@@ -169,7 +178,7 @@ end
 errorbar(x',y,errors,'k.','linestyle','none', 'LineWidth' ,1);
 hold off;
 
-xlabel('Preprocessing Param Type'); ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
+xlabel('Preprocessing Pipeline'); ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
 print(gcf, '-dtiff', ['../figures/IRC/Summary stats_Scramble conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 legend({'Within-condition', 'Between-condition'});
 
@@ -199,6 +208,6 @@ end
 errorbar(x',y,errors,'k.','linestyle','none', 'LineWidth' ,1);
 hold off;
 
-xlabel('Preprocessing Param Type'); ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
+xlabel('Preprocessing Pipeline'); ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
 print(gcf, '-dtiff', ['../figures/IRC/Summary stats_Control conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 legend({'Within-condition', 'Between-condition'});
