@@ -3,10 +3,10 @@
 %compute inter-subject correlation between the subjects' ROI-avg'd time series
 
 clear;
-group = 'AM';
+group = 'M';
 
-preproc_type = 'Python';
-preproc_params = 'HPF=.03Hz';
+preproc_type = 'AFNI';
+preproc_params = 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2';
 
 % preproc_types = {'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'Python', 'Python', 'Python'};
 % preproc_params = {'v1_original_regressors', 'v2_jamals_regressors', 'v3_jamals_regressors_smoothing=1', ...
@@ -16,8 +16,11 @@ preproc_params = 'HPF=.03Hz';
 % 
 n_cropped_TRs = 10;
 
-all_subjects = [103 105 115 117 120 121 122 123]; 
-groups = {'AM', 'M', 'AM', 'M', 'AM', 'M', 'M', 'AM'}; subjects = all_subjects(find(strcmp(groups,group))); nSubs = length(subjects);
+all_subjects = [103 105 108 115 117 120 121 122 123]; 
+groups = {'AM', 'M', 'M', 'AM', 'M', 'AM', 'M', 'M', 'AM'}; 
+
+
+subjects = all_subjects(find(strcmp(groups,group))); nSubs = length(subjects);
 
 conditions = {'1B', '2B', '8B', 'I'}; nCond = length(conditions);
 
