@@ -5,6 +5,9 @@
 clear;
 group = 'AM';
 
+%The exact reps you want to include
+scramble_reps_to_include = [1 2 3]; control_reps_to_include = [1 2]; 
+
 preproc_type = 'AFNI'; preproc_params = 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2';
 
 n_cropped_TRs = 10;
@@ -27,6 +30,8 @@ elseif strcmp(preproc_type, 'Python')
 end
 
 nTRs = 148; nROIs = length(ROIs);
+
+%Total # of conditions and reps
 n_scramble_cond = 4; n_scramble_reps = 3;
 n_control_cond = 3; n_control_reps = 2;
 
@@ -60,10 +65,10 @@ for ROI = 1:nROIs
             otherSubs = setdiff(1:nSubs,s);
             %For this subject, extract the rep-averaged time series for
             %this ROI, this condition
-            currSubData = mean(data_ROIavg_scramble_allSubs(ROI,n_cropped_TRs+1:end-n_cropped_TRs,cond,:,s),4);
+            currSubData = mean(data_ROIavg_scramble_allSubs(ROI,n_cropped_TRs+1:end-n_cropped_TRs,cond,scramble_reps_to_include,s),4);
             
             %Average the equivalent time series across the other N subjects
-            otherSubsData = mean(data_ROIavg_scramble_allSubs(ROI,n_cropped_TRs+1:end-n_cropped_TRs,cond,:,otherSubs),4);
+            otherSubsData = mean(data_ROIavg_scramble_allSubs(ROI,n_cropped_TRs+1:end-n_cropped_TRs,cond,scramble_reps_to_include,otherSubs),4);
             avg_otherSubsData = mean(otherSubsData,5);
             
             [ISC_r, ISC_p] = corrcoef(currSubData, avg_otherSubsData);
@@ -82,10 +87,10 @@ for ROI = 1:nROIs
             otherSubs = setdiff(1:nSubs,s);
             %For this subject, extract the rep-averaged time series for
             %this ROI, this condition
-            currSubData = mean(data_ROIavg_control_allSubs(ROI,n_cropped_TRs+1:end-n_cropped_TRs,cond,:,s),4);
+            currSubData = mean(data_ROIavg_control_allSubs(ROI,n_cropped_TRs+1:end-n_cropped_TRs,cond,control_reps_to_include,s),4);
             
             %Average the equivalent time series across the other N subjects
-            otherSubsData = mean(data_ROIavg_control_allSubs(ROI,n_cropped_TRs+1:end-n_cropped_TRs,cond,:,otherSubs),4);
+            otherSubsData = mean(data_ROIavg_control_allSubs(ROI,n_cropped_TRs+1:end-n_cropped_TRs,cond,control_reps_to_include,otherSubs),4);
             avg_otherSubsData = mean(otherSubsData,5);
             
             [ISC_r, ISC_p] = corrcoef(currSubData, avg_otherSubsData);
