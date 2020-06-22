@@ -4,8 +4,6 @@
 %one. For each held-out loaf, which of the 4 other conditions is it most correlated with? (Chance = .25)
 %Repeat for nReps.
 
-%Note: since there is some randomness in which reps are held-out, this will
-%generate slightly different results across runs of the script. Add a random seed. 
 
 %TO ADD: in which areas is I_A more correlated w/ I than the other 3
 %scrambles?
@@ -167,6 +165,15 @@ for p = 1:length(preproc_types)
 
     end
 end
+
+
+%Plot classification accuracy (subject x preproc combo)
+figsize = [100 100 1000 400]; 
+figure('Units', 'pixels', 'Position', figsize);
+subplot(1,2,1); imagesc(avg_acc_scramble); title('Scramble conditions'); xlabel('Preproc Param Type'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
+subplot(1,2,2); imagesc(avg_acc_control);  title('Control conditions'); xlabel('Preproc Param Type'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary by subject_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+
 
 %Plot avg classification accuracy across subjects, for each preproc combo (scramble condition)
 y = mean(avg_acc_scramble);
