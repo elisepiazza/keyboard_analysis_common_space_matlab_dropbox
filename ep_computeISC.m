@@ -6,7 +6,7 @@ clear;
 group = 'AM';
 
 %The exact reps you want to include
-scramble_reps_to_include = [1 2 3]; control_reps_to_include = [1 2]; 
+scramble_reps_to_include = [3]; control_reps_to_include = [2]; 
 
 preproc_type = 'AFNI'; preproc_params = 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2';
 
@@ -117,7 +117,7 @@ for ROI = 1:nROIs
     errorbar(x,y,errors,'k.', 'LineWidth', 1)
     
     xlabel('Condition'); ylabel('ISC by condition (r)'); title([ROIs{ROI}]); xlim([.3 4.7]); ylim([0 .6]); set(gca, 'XTickLabel', scramble_conditions, 'FontSize', 16, 'FontName', 'Helvetica');
-    print(gcf, '-dtiff', ['../figures/ISC/1-ISC by condition (Scramble conds), ' group ' group, (' ROIs{ROI} ')_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+    print(gcf, '-dtiff', ['../figures/ISC/ISC by condition (Scramble conds), rep1, ' group ' group, (' ROIs{ROI} ')_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
     
     %Plot ISC for control conditions
@@ -135,7 +135,7 @@ for ROI = 1:nROIs
     errorbar(x,y,errors,'k.', 'LineWidth', 1)
     
     xlabel('Condition'); ylabel('ISC by condition (r)'); title([ROIs{ROI}]); xlim([.3 4.7]); ylim([0 .6]); set(gca, 'XTickLabel', control_conditions, 'FontSize', 16, 'FontName', 'Helvetica');
-    print(gcf, '-dtiff', ['../figures/ISC/1-ISC by condition (Control conds), ' group ' group, (' ROIs{ROI} ')_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+    print(gcf, '-dtiff', ['../figures/ISC/ISC by condition (Control conds), rep1, ' group ' group, (' ROIs{ROI} ')_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
     
 end
