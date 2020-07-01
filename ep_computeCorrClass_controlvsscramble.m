@@ -84,12 +84,12 @@ for s = 1:nSubs
 end
 
 
-%Plot classification accuracy (subject x condition (I_A, I_I)
+%Plot classification accuracy (ROI x condition (I_A, I_I)
 figsize = [100 100 300 400];
 figure('Units', 'pixels', 'Position', figsize);
 imagesc(mean(ROI_acc_control_vs_scramble,3));
 title('Control v. Scramble conditions'); xlabel('Condition'); ylabel('ROI'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica', 'XTickLabel', {'I_A', 'I_I'}, 'YTickLabel', ROIs); colorbar; caxis([0 .5]);
-print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary by subject_controlvsscramble_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary by ROI_controlvsscramble_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 % %Plot avg classification accuracy across subjects, for each preproc combo (control v. scramble)
