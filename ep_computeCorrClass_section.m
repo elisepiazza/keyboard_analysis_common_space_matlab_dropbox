@@ -91,7 +91,7 @@ for s = 1:nSubs
     %Plot classification accuracy (ROI x cond) for this subject (all 4 sections)
     figsize = [100 100 400 500];
     figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc_sections(:,:,s)); xlabel('Section'); ylabel('ROI'); set(gca, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-    print(gcf, '-dtiff', ['../figures/Correlation classifier/sub-' num2str(subject) '_sections_' preproc_type '_' preproc_param '1.tif']);
+    print(gcf, '-dtiff', ['../figures/Correlation classifier/sub-' num2str(subject) '_sections_' preproc_type '_' preproc_param '.tif']);
     
 end
 
@@ -100,5 +100,5 @@ figsize = [100 100 300 400];
 figure('Units', 'pixels', 'Position', figsize);
 imagesc(mean(ROI_acc_sections,3));
 title('Classify sections'); xlabel('Section'); ylabel('ROI'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica', 'YTickLabel', ROIs); colorbar; caxis([0 1]);
-print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary by ROI_section_1.tif']);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary by ROI_section.tif']);
 
