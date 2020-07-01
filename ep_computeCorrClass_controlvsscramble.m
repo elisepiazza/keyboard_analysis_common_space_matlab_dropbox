@@ -79,7 +79,7 @@ for s = 1:nSubs
     
     %Plot classification accuracy (ROI x cond) for this subject (I_A, I_I vs. scramble conditions)
     figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc_control_vs_scramble(:,:,s)); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', {'I_A', 'I_I'}, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-    print(gcf, '-dtiff', ['../figures/CC/sub-' num2str(subject) '_controlvscramble_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+    print(gcf, '-dtiff', ['../figures/Correlation classifier/sub-' num2str(subject) '_controlvscramble_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
 end
 
@@ -89,7 +89,7 @@ figsize = [100 100 300 400];
 figure('Units', 'pixels', 'Position', figsize);
 imagesc(mean(ROI_acc_control_vs_scramble,3));
 title('Control v. Scramble conditions'); xlabel('Condition'); ylabel('ROI'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica', 'XTickLabel', {'I_A', 'I_I'}, 'YTickLabel', ROIs); colorbar; caxis([0 .5]);
-print(gcf, '-dtiff', ['../figures/CC/Summary by subject_controlvsscramble_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary by subject_controlvsscramble_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 % %Plot avg classification accuracy across subjects, for each preproc combo (control v. scramble)
