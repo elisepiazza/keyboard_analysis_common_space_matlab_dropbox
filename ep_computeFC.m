@@ -66,7 +66,7 @@ subplot(1,4,4); imagesc(mean(ROI_matrix_scramble(:,:,4,:),4)); title('I'); xlabe
 print(gcf, '-dtiff', ['../figures/Functional connectivity/Functional Connectivity (scramble, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
-%For each control condiiton, plot the group-averaged FC matrix 
+%For each control condition, plot the group-averaged FC matrix 
 figsize = [100 100 1000 300]; 
 figure('Units', 'pixels', 'Position', figsize);
 
