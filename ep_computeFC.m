@@ -7,11 +7,11 @@
 
 clear;
 
-group = 'AM';
-subjects = [103 115 120 123]; %AM
+% group = 'AM';
+% subjects = [103 115 120 123]; %AM
 
-% group = 'M';
-% subjects = [105 108 117 121 122]; %M;
+group = 'M';
+subjects = [105 108 117 121 122]; %M;
 
 n_cropped_TRs = 0;
 
@@ -56,22 +56,22 @@ end
 
 
 %For each scramble condition, plot the group-averaged FC matrix
-figsize = [100 100 1400 300]; 
+figsize = [100 100 1400 250]; 
 figure('Units', 'pixels', 'Position', figsize);
 
-subplot(1,4,1); imagesc(mean(ROI_matrix_scramble(:,:,1,:),4)); title('1B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-subplot(1,4,2); imagesc(mean(ROI_matrix_scramble(:,:,2,:),4)); title('2B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-subplot(1,4,3); imagesc(mean(ROI_matrix_scramble(:,:,3,:),4)); title('8B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-subplot(1,4,4); imagesc(mean(ROI_matrix_scramble(:,:,4,:),4)); title('I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
+subplot(1,4,1); imagesc(mean(ROI_matrix_scramble(:,:,1,:),4)); title('1B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
+subplot(1,4,2); imagesc(mean(ROI_matrix_scramble(:,:,2,:),4)); title('2B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
+subplot(1,4,3); imagesc(mean(ROI_matrix_scramble(:,:,3,:),4)); title('8B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
+subplot(1,4,4); imagesc(mean(ROI_matrix_scramble(:,:,4,:),4)); title('I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
 print(gcf, '-dtiff', ['../figures/Functional connectivity/Functional Connectivity (scramble, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 %For each control condition, plot the group-averaged FC matrix 
-figsize = [100 100 1000 300]; 
+figsize = [100 100 1000 250]; 
 figure('Units', 'pixels', 'Position', figsize);
 
-subplot(1,3,1); imagesc(mean(ROI_matrix_control(:,:,1,:),4)); title('I_N'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-subplot(1,3,2); imagesc(mean(ROI_matrix_control(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-subplot(1,3,3); imagesc(mean(ROI_matrix_control(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
+subplot(1,3,1); imagesc(mean(ROI_matrix_control(:,:,1,:),4)); title('I_N'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
+subplot(1,3,2); imagesc(mean(ROI_matrix_control(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
+subplot(1,3,3); imagesc(mean(ROI_matrix_control(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
 print(gcf, '-dtiff', ['../figures/Functional connectivity/Functional Connectivity (control, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
