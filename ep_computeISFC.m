@@ -1,11 +1,10 @@
 %ep_computeISFC
 %For each subject, for each ROI, for each of the 4 scrambled conditions + 3 control conditions,
-%compute inter-subject correlation between the subjects' ROI-avg'd time
-%series and all ROIs in each other subject
-%1B (avg across reps), s1, correlate s1's 10 ROIs (ROI x TR data) with s2's 10 ROIs
+%compute inter-subject correlation between the subjects' ROI-avg'd time series and all ROIs in each other subject
+%For each condition, for each subject, extract their rep-averaged ROI x TR data and correlate with avg of others' ROI x TR data 
 
 clear;
-group = 'M';
+group = 'AM';
 n_cropped_TRs = 0;
 
 %The exact reps you want to include
@@ -61,6 +60,8 @@ for cond = 1:n_scramble_cond
         otherSubsData = mean(data_ROIavg_scramble_allSubs(ROI_order,n_cropped_TRs+1:end-n_cropped_TRs,cond,scramble_reps_to_include,otherSubs),4);
         avg_otherSubsData = mean(otherSubsData,5);
         
+        %Correlate the current subject's ROI x TR data with the average ROI
+        %x TR data across the other subjects
         ISFC_mat_scramble(:,:,cond,s) = corr(currSubData',avg_otherSubsData');                
     end    
 end
@@ -83,18 +84,18 @@ for cond = 1:n_control_cond
 end
 
 %For each scramble condition, plot the group-averaged ISFC matrix
-figsize = [100 100 2000 300]; 
+figsize = [100 100 1100 250]; 
 figure('Units', 'pixels', 'Position', figsize);
-subplot(1,4,1); imagesc(mean(ISFC_mat_scramble(:,:,1,:),4)); title('1B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-subplot(1,4,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('2B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-subplot(1,4,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('8B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-subplot(1,4,4); imagesc(mean(ISFC_mat_scramble(:,:,4,:),4)); title('I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;  caxis([-.1 .4]);
+subplot(1,4,1); imagesc(mean(ISFC_mat_scramble(:,:,1,:),4)); title('1B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
+subplot(1,4,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('2B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
+subplot(1,4,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('8B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
+subplot(1,4,4); imagesc(mean(ISFC_mat_scramble(:,:,4,:),4)); title('I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);  
 print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 %For each control condition, plot the group-averaged ISFC matrix
-figsize = [100 100 1000 300]; 
+figsize = [100 100 800 250]; 
 figure('Units', 'pixels', 'Position', figsize);
-subplot(1,3,1); imagesc(mean(ISFC_mat_control(:,:,1,:),4)); title('I_N'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-subplot(1,3,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-subplot(1,3,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
+subplot(1,3,1); imagesc(mean(ISFC_mat_control(:,:,1,:),4)); title('I_N'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
+subplot(1,3,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
+subplot(1,3,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]); 
 print(gcf, '-dtiff', ['../figures/ISFC/ISFC (control, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
