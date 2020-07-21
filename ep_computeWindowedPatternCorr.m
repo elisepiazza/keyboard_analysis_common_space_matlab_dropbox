@@ -4,13 +4,13 @@
 
 clear;
 
-ROI_to_plot = 8;
+ROI_to_plot = 2;
 
-% group = 'AM';
-% subjects = [103 115 120 123]; %AM
+group = 'AM';
+subjects = [103 115 120 123]; %AM
 
-group = 'M';
-subjects = [105 108 117 121 122]; %M;
+% group = 'M';
+% subjects = [105 108 117 121 122]; %M;
  
 n_cropped_TRs = 0;
 TRs = 148 - 2*n_cropped_TRs;
@@ -62,21 +62,21 @@ for s = 1:nSubs
 end
 
 %For each scramble condition, plot the group-averaged pattern correlation matrix
-figsize = [100 100 1100 250]; 
+figsize = [100 100 1400 250]; 
 figure('Units', 'pixels', 'Position', figsize);
 
-subplot(1,4,1); imagesc(squeeze(mean(TR_matrix_scramble(ROI,:,:,1,:),5))); title('1B'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-subplot(1,4,2); imagesc(squeeze(mean(TR_matrix_scramble(ROI,:,:,2,:),5))); title('2B'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-subplot(1,4,3); imagesc(squeeze(mean(TR_matrix_scramble(ROI,:,:,3,:),5))); title('8B'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-subplot(1,4,4); imagesc(squeeze(mean(TR_matrix_scramble(ROI,:,:,4,:),5))); title('I'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+subplot(1,4,1); imagesc(squeeze(mean(TR_matrix_scramble(ROI,:,:,1,:),5))); title('1B'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;
+subplot(1,4,2); imagesc(squeeze(mean(TR_matrix_scramble(ROI,:,:,2,:),5))); title('2B'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;
+subplot(1,4,3); imagesc(squeeze(mean(TR_matrix_scramble(ROI,:,:,3,:),5))); title('8B'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;
+subplot(1,4,4); imagesc(squeeze(mean(TR_matrix_scramble(ROI,:,:,4,:),5))); title('I'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;
 print(gcf, '-dtiff', ['../figures/Pattern correlation/Pattern correlation (' ROIs{ROI_to_plot} ', scramble, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 %For each control condition, plot the group-averaged pattern correlation matrix 
-figsize = [100 100 800 250]; 
+figsize = [100 100 1000 250]; 
 figure('Units', 'pixels', 'Position', figsize);
 
-subplot(1,3,1); imagesc(squeeze(mean(TR_matrix_control(ROI,:,:,1,:),5))); title('I_N'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-subplot(1,3,2); imagesc(squeeze(mean(TR_matrix_control(ROI,:,:,2,:),5))); title('I_A'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-subplot(1,3,3); imagesc(squeeze(mean(TR_matrix_control(ROI,:,:,3,:),5))); title('I_I'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+subplot(1,3,1); imagesc(squeeze(mean(TR_matrix_control(ROI,:,:,1,:),5))); title('I_N'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;
+subplot(1,3,2); imagesc(squeeze(mean(TR_matrix_control(ROI,:,:,2,:),5))); title('I_A'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;
+subplot(1,3,3); imagesc(squeeze(mean(TR_matrix_control(ROI,:,:,3,:),5))); title('I_I'); xlabel('TRs'); ylabel('TRs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;
 print(gcf, '-dtiff', ['../figures/Pattern correlation/Pattern correlation (' ROIs{ROI_to_plot} ', control, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
