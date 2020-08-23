@@ -6,11 +6,14 @@
 clear;
 subjects = [103 105 108 115 117 120 121 122 123]; nSubs = length(subjects);
 
-preproc_types = {'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'Python', 'Python', 'Python'};
-preproc_params = {'v1_original_regressors', 'v2_jamals_regressors', 'v3_jamals_regressors_smoothing=1', ...
-    'v4_jamals_regressors_smoothing=1_defaultGMmask', 'v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3', ...
-    'v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2', 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2', ...
-    'HPF=.01Hz', 'HPF=.03Hz', 'HPF=.06Hz'};
+% preproc_types = {'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'AFNI', 'Python', 'Python', 'Python'};
+% preproc_params = {'v1_original_regressors', 'v2_jamals_regressors', 'v3_jamals_regressors_smoothing=1', ...
+%     'v4_jamals_regressors_smoothing=1_defaultGMmask', 'v5_jamals_regressors_smoothing=1_defaultGMmask_polort=3', ...
+%     'v6_jamals_regressors_smoothing=1_defaultGMmask_polort=2', 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2', ...
+%     'HPF=.01Hz', 'HPF=.03Hz', 'HPF=.06Hz'};
+% 
+preproc_types = {'AFNI'};
+preproc_params = {'v7_15_regressors_no_smoothing_defaultGMmask_polort=2'};
 
 n_cropped_TRs = 10;
 
@@ -78,7 +81,7 @@ for p = 1:length(preproc_types)
             
             IRC_real_mat_scramble(ROI,:) = mean(IRC_real_scramble);
             IRC_rand_mat_scramble(ROI,:) = mean(IRC_rand_scramble);
-
+            
             %Control conditions
             for cond = 1:n_control_cond
                 
@@ -108,7 +111,7 @@ for p = 1:length(preproc_types)
             
             IRC_real_mat_control(ROI,:) = mean(IRC_real_control);
             IRC_rand_mat_control(ROI,:) = mean(IRC_rand_control);
-
+            
         end
         
         
@@ -118,20 +121,20 @@ for p = 1:length(preproc_types)
             figsize = [100 100 400 350];
         end
         
-%         %Plot IRC matrices (scramble conditions)
-%         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_real_mat_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-%         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, within-condition correlation_scramble' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
-%         
-%         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-%         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_scramble' '_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        %         %Plot IRC matrices (scramble conditions)
+        %         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_real_mat_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
+        %         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, within-condition correlation_scramble' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        %
+        %         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
+        %         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_scramble' '_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
-%         %Plot IRC matrices (control conditions)
-%         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_real_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-%         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, within-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
-%         
-%         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
-%         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
-
+        %         %Plot IRC matrices (control conditions)
+        %         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_real_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
+        %         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, within-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        %
+        %         figure('Units', 'pixels', 'Position', figsize); imagesc(IRC_rand_mat_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([-.1 .4]);
+        %         print(gcf, '-dtiff', ['../figures/IRC/sub-' num2str(subject) '_Inter-rep, between-condition correlation_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        
         
         %Average IRC across ROIs/conditions (subject x preproc combo)
         avg_corr_within_scramble(s,p) = mean(mean(IRC_real_mat_scramble));
@@ -143,14 +146,14 @@ for p = 1:length(preproc_types)
     end
 end
 
-%Plot IRC (subject x preproc combo)
-figsize = [100 100 1000 800]; 
-figure('Units', 'pixels', 'Position', figsize);
-subplot(2,2,1); imagesc(avg_corr_within_scramble); title('Within-cond ISC (scramble conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
-subplot(2,2,2); imagesc(avg_corr_within_control);  title('Within-cond ISC (control conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
-subplot(2,2,3); imagesc(avg_corr_between_scramble); title('Between-cond ISC (scramble conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
-subplot(2,2,4); imagesc(avg_corr_between_control);  title('Between-cond ISC (control conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
-print(gcf, '-dtiff', ['../figures/IRC/Summary by subject_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+% %Plot IRC (subject x preproc combo)
+% figsize = [100 100 1000 800];
+% figure('Units', 'pixels', 'Position', figsize);
+% subplot(2,2,1); imagesc(avg_corr_within_scramble); title('Within-cond ISC (scramble conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
+% subplot(2,2,2); imagesc(avg_corr_within_control);  title('Within-cond ISC (control conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
+% subplot(2,2,3); imagesc(avg_corr_between_scramble); title('Between-cond ISC (scramble conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
+% subplot(2,2,4); imagesc(avg_corr_between_control);  title('Between-cond ISC (control conditions)'); xlabel('Preproc Pipeline'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 .4]);
+% print(gcf, '-dtiff', ['../figures/IRC/Summary by subject_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 %Plot avg IRC across subjects, for each preproc combo (scramble conditions)
@@ -163,25 +166,36 @@ errors_between = std(avg_corr_between_scramble)/sqrt(nSubs);
 y = horzcat(y_within', y_between');
 errors = horzcat(errors_within', errors_between');
 
-figsize = [100 100 800 400]; barwidth = 1;
-figure('Units', 'pixels', 'Position', figsize);
-
-b = bar(y, 'grouped', 'BarWidth', barwidth); set(b(1), 'FaceColor', [.7 .1 .5]); set(b(2), 'FaceColor', 'b');
-hold on; nbars = size(y, 2);
-
-% Get the x coordinate of the bars
-x = [];
-for i = 1:nbars
-    x = [x; b(i).XEndPoints];
+if length(preproc_types) == 1
+    
+    figsize = [100 100 300 400]; barwidth = .8;
+    figure('Units', 'pixels', 'Position', figsize);
+    bar(y, 'BarWidth', barwidth, 'FaceColor', [.7 .1 .5]); hold on;
+    errorbar([1 2], y, errors, 'k.', 'LineWidth', 1);
+    ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica', 'XTickLabel', {'Within', 'Between'}); xlim([0 3]);
+    print(gcf, '-dtiff', ['../figures/IRC/Summary stats_Scramble conditions_nTRs_cropped=' num2str(n_cropped_TRs) '_' preproc_params{1} '.tif']);
+    
+else
+    
+    figsize = [100 100 800 400]; barwidth = 1;
+    figure('Units', 'pixels', 'Position', figsize);
+    
+    b = bar(y, 'grouped', 'BarWidth', barwidth); set(b(1), 'FaceColor', [.7 .1 .5]); set(b(2), 'FaceColor', 'b');
+    hold on; nbars = size(y, 2);
+    
+    % Get the x coordinate of the bars
+    x = [];
+    for i = 1:nbars
+        x = [x; b(i).XEndPoints];
+    end
+    % Plot the errorbars
+    errorbar(x', y, errors,'k.','linestyle','none', 'LineWidth' ,1);
+    hold off;
+    
+    xlabel('Preprocessing Pipeline'); ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); legend({'Within-condition', 'Between-condition'});
+    print(gcf, '-dtiff', ['../figures/IRC/Summary stats_Scramble conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+    
 end
-% Plot the errorbars
-errorbar(x',y,errors,'k.','linestyle','none', 'LineWidth' ,1);
-hold off;
-
-xlabel('Preprocessing Pipeline'); ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-print(gcf, '-dtiff', ['../figures/IRC/Summary stats_Scramble conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
-legend({'Within-condition', 'Between-condition'});
-
 
 %Plot avg IRC across subjects, for each preproc combo (control conditions)
 y_within = mean(avg_corr_within_control);
@@ -193,21 +207,32 @@ errors_between = std(avg_corr_between_control)/sqrt(nSubs);
 y = horzcat(y_within', y_between');
 errors = horzcat(errors_within', errors_between');
 
-figsize = [100 100 800 400]; barwidth = 1;
-figure('Units', 'pixels', 'Position', figsize);
-
-b = bar(y, 'grouped', 'BarWidth', barwidth); set(b(1), 'FaceColor', [.7 .1 .5]); set(b(2), 'FaceColor', 'b');
-hold on; nbars = size(y, 2);
-
-% Get the x coordinate of the bars
-x = [];
-for i = 1:nbars
-    x = [x; b(i).XEndPoints];
+if length(preproc_types) == 1
+    
+    figsize = [100 100 300 400]; barwidth = .8;
+    figure('Units', 'pixels', 'Position', figsize);
+    bar(y, 'BarWidth', barwidth, 'FaceColor', [.7 .1 .5]); hold on;
+    errorbar([1 2], y, errors, 'k.', 'LineWidth', 1);
+    ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica', 'XTickLabel', {'Within', 'Between'}); xlim([0 3]);
+    print(gcf, '-dtiff', ['../figures/IRC/Summary stats_Control conditions_nTRs_cropped=' num2str(n_cropped_TRs) '_' preproc_params{1} '.tif']);
+    
+else
+    
+    figsize = [100 100 800 400]; barwidth = 1;
+    figure('Units', 'pixels', 'Position', figsize);
+    
+    b = bar(y, 'grouped', 'BarWidth', barwidth); set(b(1), 'FaceColor', [.7 .1 .5]); set(b(2), 'FaceColor', 'b');
+    hold on; nbars = size(y, 2);
+    
+    % Get the x coordinate of the bars
+    x = [];
+    for i = 1:nbars
+        x = [x; b(i).XEndPoints];
+    end
+    % Plot the errorbars
+    errorbar(x',y,errors,'k.','linestyle','none', 'LineWidth' ,1);
+    hold off;
+    
+    xlabel('Preprocessing Pipeline'); ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); legend({'Within-condition', 'Between-condition'});
+    print(gcf, '-dtiff', ['../figures/IRC/Summary stats_Control conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 end
-% Plot the errorbars
-errorbar(x',y,errors,'k.','linestyle','none', 'LineWidth' ,1);
-hold off;
-
-xlabel('Preprocessing Pipeline'); ylabel('Inter-rep correlation'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-print(gcf, '-dtiff', ['../figures/IRC/Summary stats_Control conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
-legend({'Within-condition', 'Between-condition'});
