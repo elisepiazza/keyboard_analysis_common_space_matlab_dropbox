@@ -151,12 +151,12 @@ for p = 1:length(preproc_types)
         
         %Plot classification accuracy (ROI x cond) for this subject (scramble conditions)
         figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc_scramble); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', scramble_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-        print(gcf, '-dtiff', ['../figures/CC1/sub-' num2str(subject) '_scramble_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        print(gcf, '-dtiff', ['../figures/Correlation classifier/sub-' num2str(subject) '_scramble_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
         
         
         %Plot classification accuracy (ROI x cond) for this subject (control conditions)
         figure('Units', 'pixels', 'Position', figsize); imagesc(ROI_acc_control); xlabel('Condition'); ylabel('ROI'); set(gca, 'XTickLabel', control_conditions, 'YTickLabel', ROIs, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-        print(gcf, '-dtiff', ['../figures/CC1/sub-' num2str(subject) '_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+        print(gcf, '-dtiff', ['../figures/Correlation classifier/sub-' num2str(subject) '_control_' preproc_type '_' preproc_param '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
                 
         %Average classification accuracy across ROIs/conditions (subject x preproc combo)
         avg_acc_scramble(s,p) = mean(mean(ROI_acc_scramble));
@@ -171,7 +171,7 @@ figsize = [100 100 1000 400];
 figure('Units', 'pixels', 'Position', figsize);
 subplot(1,2,1); imagesc(avg_acc_scramble); title('Scramble conditions'); xlabel('Preproc Param Type'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
 subplot(1,2,2); imagesc(avg_acc_control);  title('Control conditions'); xlabel('Preproc Param Type'); ylabel('Subject'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar; caxis([0 1]);
-print(gcf, '-dtiff', ['../figures/CC1/Summary by subject_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary by subject_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 %Plot avg classification accuracy across subjects, for each preproc combo (scramble condition)
@@ -185,7 +185,7 @@ bar(x,y,barwidth,'facecolor', [.2 .8 .9]); hold on;
 errorbar(x,y,errors,'k.', 'LineWidth', 1)
 
 xlabel('Preprocessing Param Type'); ylabel('Correlation classifier accuracy (% correct)'); xlim([.3 10.7]); ylim([0 1]); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-print(gcf, '-dtiff', ['../figures/CC1/Summary stats_Scramble conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary stats_Scramble conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 %Plot avg classification accuracy across subjects, for each preproc combo (control condition)
@@ -199,5 +199,5 @@ bar(x,y,barwidth,'facecolor', [.2 .8 .9]); hold on;
 errorbar(x,y,errors,'k.', 'LineWidth', 1)
 
 xlabel('Preprocessing Param Type'); ylabel('Correlation classifier accuracy (% correct)'); xlim([.3 10.7]); ylim([0 1]); set(gca, 'FontSize', 16, 'FontName', 'Helvetica');
-print(gcf, '-dtiff', ['../figures/CC1/Summary stats_Control conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+print(gcf, '-dtiff', ['../figures/Correlation classifier/Summary stats_Control conditions_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
