@@ -4,8 +4,8 @@
 %For each condition, for each subject, extract their rep-averaged ROI x TR data and correlate with avg of others' ROI x TR data 
 
 clear;
-group = 'AM';
-n_cropped_TRs = 0;
+group = 'M';
+n_cropped_TRs = 10;
 
 %The exact reps you want to include
 scramble_reps_to_include = [1 2 3]; control_reps_to_include = [1 2];
@@ -18,7 +18,7 @@ groups = {'AM', 'M', 'M', 'AM', 'M', 'AM', 'M', 'M', 'AM'};
 subjects = all_subjects(find(strcmp(groups,group))); nSubs = length(subjects);
 
 ROIs = {'AngularG', 'Cerebellum', 'HeschlsG', 'STG', 'MotorCortex', 'TPJ', 'PCC', 'Precuneus', 'A1', 'mPFC'}; nROIs = length(ROIs);
-ROI_order = [9 3 4 2 5 6 1 7 8 10];
+ROI_order = [9 3 4 5 6 1 7 8 10 2];
 
 filepath = ['../../common_space_AFNI/reshaped_by_conditions/' preproc_params '/sub-'];
 barcolor = [.9 .5 0];
