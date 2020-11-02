@@ -26,7 +26,7 @@ end
 for s = 1:length(subjects)
     subject = subjects(s);
     
-    load(['../reshaped_by_conditions/' data_type '/sub-' num2str(subject) '.mat']);
+    load(['../../common_space_AFNI/reshaped_by_conditions/' data_type '/sub-' num2str(subject) '.mat']);
     n_scramble_reps = size(data_ROIavg_scramble,4);
     
     nROIs = length(ROIs);
