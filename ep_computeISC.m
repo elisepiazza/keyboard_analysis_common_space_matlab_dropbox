@@ -6,14 +6,18 @@ clear;
 group = 'AM';
 
 %The exact reps you want to include
-scramble_reps_to_include = [3]; control_reps_to_include = [2]; 
+scramble_reps_to_include = [1 2 3]; control_reps_to_include = [1 2]; 
 
 preproc_type = 'AFNI'; preproc_params = 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2';
 
-n_cropped_TRs = 10;
+n_cropped_TRs = 0;
 
-all_subjects = [103 105 108 115 117 120 121 122 123]; 
-groups = {'AM', 'M', 'M', 'AM', 'M', 'AM', 'M', 'M', 'AM'}; 
+all_subjects = [103 105 115 117 120 121 122 123]; 
+groups = {'AM', 'M', 'AM', 'M', 'AM', 'M', 'M', 'AM'}; 
+
+
+% all_subjects = [103 105 108 115 117 120 121 122 123]; 
+% groups = {'AM', 'M', 'M', 'AM', 'M', 'AM', 'M', 'M', 'AM'}; 
 
 subjects = all_subjects(find(strcmp(groups,group))); nSubs = length(subjects);
 
@@ -117,7 +121,7 @@ for ROI = 1:nROIs
     errorbar(x,y,errors,'k.', 'LineWidth', 1)
     
     xlabel('Condition'); ylabel('ISC by condition (r)'); title([ROIs{ROI}]); xlim([.3 4.7]); ylim([0 .6]); set(gca, 'XTickLabel', scramble_conditions, 'FontSize', 16, 'FontName', 'Helvetica');
-    print(gcf, '-dtiff', ['../figures/ISC/ISC by condition (Scramble conds), rep1, ' group ' group, (' ROIs{ROI} ')_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+    print(gcf, '-dtiff', ['../figures/ISC/ISC by condition (Scramble conds), rep' num2str(scramble_reps_to_include) '_' group ' group, (' ROIs{ROI} ')_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
     
     %Plot ISC for control conditions
@@ -135,7 +139,7 @@ for ROI = 1:nROIs
     errorbar(x,y,errors,'k.', 'LineWidth', 1)
     
     xlabel('Condition'); ylabel('ISC by condition (r)'); title([ROIs{ROI}]); xlim([.3 4.7]); ylim([0 .6]); set(gca, 'XTickLabel', control_conditions, 'FontSize', 16, 'FontName', 'Helvetica');
-    print(gcf, '-dtiff', ['../figures/ISC/ISC by condition (Control conds), rep1, ' group ' group, (' ROIs{ROI} ')_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+    print(gcf, '-dtiff', ['../figures/ISC/ISC by condition (Control conds), rep' num2str(control_reps_to_include) '_' group ' group, (' ROIs{ROI} ')_' preproc_type '_' preproc_params '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
     
 end
