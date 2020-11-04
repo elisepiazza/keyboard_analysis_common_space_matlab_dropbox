@@ -4,7 +4,7 @@
 %For each condition, for each subject, extract their rep-averaged ROI x TR data and correlate with avg of others' ROI x TR data 
 
 clear;
-group = 'M';
+group = 'AM';
 n_cropped_TRs = 10;
 
 %The exact reps you want to include
@@ -90,7 +90,7 @@ subplot(1,4,1); imagesc(mean(ISFC_mat_scramble(:,:,1,:),4)); title('1B'); xlabel
 subplot(1,4,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('2B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,4,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('8B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,4,4); imagesc(mean(ISFC_mat_scramble(:,:,4,:),4)); title('I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);  
-print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+% print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 %For each control condition, plot the group-averaged ISFC matrix
 figsize = [100 100 800 250]; 
@@ -98,4 +98,16 @@ figure('Units', 'pixels', 'Position', figsize);
 subplot(1,3,1); imagesc(mean(ISFC_mat_control(:,:,1,:),4)); title('I_N'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,3,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,3,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]); 
-print(gcf, '-dtiff', ['../figures/ISFC/ISFC (control, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+% print(gcf, '-dtiff', ['../figures/ISFC/ISFC (control, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+
+%Cluster the matrices
+group_avg_1B = mean(ISFC_mat_scramble(:,:,1,:),4);
+z = linkage(group_avg_1B,'ward');
+c = cluster(z,'Maxclust',4);
+scatter3(group_avg_1B(:,1),group_avg_1B(:,2),group_avg_1B(:,3),10,c)
+
+load fisheriris
+Z = linkage(meas,'average','chebychev');
+T = cluster(Z,'maxclust',3);
+cutoff = median([Z(end-2,3) Z(end-1,3)]);
+dendrogram(Z,'ColorThreshold',cutoff)
