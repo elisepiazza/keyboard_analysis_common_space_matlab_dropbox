@@ -4,7 +4,7 @@
 %For each condition, for each subject, extract their rep-averaged ROI x TR data and correlate with avg of others' ROI x TR data 
 
 clear;
-group = 'AM';
+group = 'M';
 n_cropped_TRs = 10;
 nROIs = 10;
 
@@ -97,27 +97,45 @@ subplot(1,4,1); imagesc(mean(ISFC_mat_scramble(:,:,1,:),4)); title('1B'); xlabel
 subplot(1,4,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('2B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,4,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('8B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,4,4); imagesc(mean(ISFC_mat_scramble(:,:,4,:),4)); title('I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);  
-print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 %For each control condition, plot the group-averaged ISFC matrix
 figsize = [100 100 800 250]; 
 figure('Units', 'pixels', 'Position', figsize);
 subplot(1,3,1); imagesc(mean(ISFC_mat_control(:,:,1,:),4)); title('I_N'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
-subplot(1,3,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
-subplot(1,3,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]); 
-print(gcf, '-dtiff', ['../figures/ISFC/ISFC (control, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+subplot(1,3,2); imagesc(mean(ISFC_mat_control(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
+subplot(1,3,3); imagesc(mean(ISFC_mat_control(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]); 
+print(gcf, '-dtiff', ['../figures/ISFC/ISFC (control, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
 
 
 %For each scramble condition, plot schemaball figure
 lineColor = [0 1 0];
-nodeColor = [1 0 0];
+nodeColor = [0 0 1];
 
-% figure('Units', 'pixels', 'Position', figsize);
-schemaball(mean(ISFC_mat_scramble(:,:,1,:),4), ROIs, lineColor, nodeColor); title('1B'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-schemaball(mean(ISFC_mat_scramble(:,:,2,:),4), ROIs, lineColor, nodeColor); title('2B'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-schemaball(mean(ISFC_mat_scramble(:,:,3,:),4), ROIs, lineColor, nodeColor); title('8B'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-schemaball(mean(ISFC_mat_scramble(:,:,4,:),4), ROIs, lineColor, nodeColor); title('I'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-% print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nTRs_cropped=' num2str(n_cropped_TRs) '.tif']);
+h = schemaball(mean(ISFC_mat_scramble(:,:,1,:),4), ROIs(ROI_order), lineColor, nodeColor); title('1B'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); 
+
+h = schemaball(mean(ISFC_mat_scramble(:,:,2,:),4), ROIs(ROI_order), lineColor, nodeColor); title('2B'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); 
+
+h = schemaball(mean(ISFC_mat_scramble(:,:,3,:),4), ROIs(ROI_order), lineColor, nodeColor); title('8B'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); 
+
+h = schemaball(mean(ISFC_mat_scramble(:,:,4,:),4), ROIs(ROI_order), lineColor, nodeColor); title('I'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); 
+
+
+%For each control condition, plot schemaball figure
+h = schemaball(mean(ISFC_mat_control(:,:,1,:),4), ROIs(ROI_order), lineColor, nodeColor); title('I_N'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); 
+
+h = schemaball(mean(ISFC_mat_control(:,:,2,:),4), ROIs(ROI_order), lineColor, nodeColor); title('I_A'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); 
+
+h = schemaball(mean(ISFC_mat_control(:,:,3,:),4), ROIs(ROI_order), lineColor, nodeColor); title('I_I'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); 
+
+
 
 
 % %Cluster the matrices
