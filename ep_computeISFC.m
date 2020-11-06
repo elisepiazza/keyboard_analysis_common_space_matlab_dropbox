@@ -6,10 +6,11 @@
 clear;
 group = 'M';
 nROIs = 10;
+
 n_cropped_TRs = 10;
 
 %The exact reps you want to include
-scramble_reps_to_include = [1]; control_reps_to_include = [1 2];
+scramble_reps_to_include = [1 2 3]; control_reps_to_include = [1 2];
 
 preproc_type = 'AFNI'; preproc_params = 'v7_15_regressors_no_smoothing_defaultGMmask_polort=2';
 
@@ -97,7 +98,7 @@ subplot(1,4,1); imagesc(mean(ISFC_mat_scramble(:,:,1,:),4)); title('1B'); xlabel
 subplot(1,4,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('2B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,4,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('8B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,4,4); imagesc(mean(ISFC_mat_scramble(:,:,4,:),4)); title('I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);  
-print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(scramble_reps_to_include) '.tif']);
+% print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(scramble_reps_to_include) '.tif']);
 
 %For each control condition, plot the group-averaged ISFC matrix
 figsize = [100 100 800 250]; 
@@ -105,7 +106,7 @@ figure('Units', 'pixels', 'Position', figsize);
 subplot(1,3,1); imagesc(mean(ISFC_mat_control(:,:,1,:),4)); title('I_N'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,3,2); imagesc(mean(ISFC_mat_control(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
 subplot(1,3,3); imagesc(mean(ISFC_mat_control(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]); 
-print(gcf, '-dtiff', ['../figures/ISFC/ISFC (control, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(control_reps_to_include) '.tif']);
+% print(gcf, '-dtiff', ['../figures/ISFC/ISFC (control, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(control_reps_to_include) '.tif']);
 
 
 %For each scramble condition, plot schemaball figure
@@ -141,7 +142,6 @@ print(gcf, '-dtiff', ['../figures/ISFC/ISFC_schemaball (control, I_A, ' group ' 
 h = schemaball(mean(ISFC_mat_control(:,:,3,:),4), ROIs(ROI_order), lineColor, nodeColor); title('I_I'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
 set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); set(gcf, 'InvertHardcopy', 'off');
 print(gcf, '-dtiff', ['../figures/ISFC/ISFC_schemaball (control, I_I, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(control_reps_to_include) '.tif']);
-
 
 
 
