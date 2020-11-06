@@ -77,7 +77,7 @@ function h = schemaball(r, lbls, ccolor, ncolor)
 % Tweak these only
 
 % Number of color shades/buckets (large N simply creates many perceptually indifferent color shades)
-N = 5;
+N = 20;
 % Points in [0, 1] for bezier curves: leave space at the extremes to detach a bit the nodes.
 % Smaller step will use more points to plot the curves.
 t      = (0.025: 0.05 :1)';
@@ -135,7 +135,8 @@ ncolor = rgb2hsv(ncolor);
 %% Engine
 
 % Create figure
-figure('renderer','zbuffer','visible','off')
+figsize = [100 100 500 400]; 
+figure('renderer','zbuffer','visible','off','Units','pixels','Position',figsize)
 axes('NextPlot','add')
 
 % Index only low triangular matrix without main diag
@@ -192,9 +193,9 @@ s.s        = scatter(x(isrt),y(isrt),[], ncolor,'fill','MarkerEdgeColor',ecolor,
 % PLACE TEXT LABELS such that you always read 'left to right'
 ipos       = x > 0;
 s.t        = zeros(sz(1),1);
-s.t( ipos) = text(x( ipos)*1.1, y( ipos)*1.1, lbls( ipos),'Color',tcolor);
+s.t( ipos) = text(x( ipos)*1.1, y( ipos)*1.1, lbls( ipos),'Color',tcolor,'FontSize',18);
 set(s.t( ipos),{'Rotation'}, num2cell(theta(ipos)'/tau*360))
-s.t(~ipos) = text(x(~ipos)*1.1, y(~ipos)*1.1, lbls(~ipos),'Color',tcolor);
+s.t(~ipos) = text(x(~ipos)*1.1, y(~ipos)*1.1, lbls(~ipos),'Color',tcolor,'FontSize',18);
 set(s.t(~ipos),{'Rotation'}, num2cell(theta(~ipos)'/tau*360 - 180),'Horiz','right')
 
 % ADJUST FIGURE height width to fit text labels
