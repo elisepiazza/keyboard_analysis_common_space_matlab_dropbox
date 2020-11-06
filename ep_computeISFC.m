@@ -6,7 +6,7 @@
 clear;
 group = 'M';
 n_cropped_TRs = 10;
-nROIs = 10;
+nROIs = 15;
 
 %The exact reps you want to include
 scramble_reps_to_include = [1 2 3]; control_reps_to_include = [1 2];
