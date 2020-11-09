@@ -53,7 +53,7 @@ end
 ISFC_mat_scramble = zeros(nROIs,nROIs,n_scramble_cond,nSubs);
 ISFC_mat_control = zeros(nROIs,nROIs,n_control_cond,nSubs);
 
-%Compute ISC
+%Compute ISFC
 %1B (avg across reps), s1, correlate s1's ROI x TR data with avg of others' ROI x TR data
 
 %For scramble conditions
@@ -70,26 +70,34 @@ for cond = 1:n_scramble_cond
         
         %Correlate the current subject's ROI x TR data with the average ROI
         %x TR data across the other subjects
-        ISFC_mat_scramble(:,:,cond,s) = corr(currSubData',avg_otherSubsData');                
+        ISFC_mat_scramble(:,:,cond,s) = corr(currSubData',avg_otherSubsData'); 
+        
+        %save a null distribution of r values for this channel and subject
+        nPerm = 100;
+        parfor p = 1:nPerm
+            thisdata_phasescrambled = phase_scramble_time_series(currSubData',0); %make P (1000) phase-scrambled time series
+            ISFC_mat_scramble_all(:,:,cond,s,p) = corr(thisdata_phasescrambled, avg_otherSubsData); %save the r value between this subject and channel's scrambled time series and avg of others (non-scrambled)
+        end
+    
     end    
 end
 
-%For control conditions
-for cond = 1:n_control_cond
-    for s = 1:nSubs
-        otherSubs = setdiff(1:nSubs,s);
-        
-        %For this subject, extract the rep-averaged (ROI x TR) data for this condition
-        currSubData = mean(data_ROIavg_control_allSubs(ROI_order,n_cropped_TRs+1:end-n_cropped_TRs,cond,control_reps_to_include,s),4);
-        
-        %Average the equivalent (ROI x TR) data across the other N subjects
-        otherSubsData = mean(data_ROIavg_control_allSubs(ROI_order,n_cropped_TRs+1:end-n_cropped_TRs,cond,control_reps_to_include,otherSubs),4);
-        avg_otherSubsData = mean(otherSubsData,5);
-        
-        ISFC_mat_control(:,:,cond,s) = corr(currSubData',avg_otherSubsData');
-                
-    end    
-end
+% %For control conditions
+% for cond = 1:n_control_cond
+%     for s = 1:nSubs
+%         otherSubs = setdiff(1:nSubs,s);
+%         
+%         %For this subject, extract the rep-averaged (ROI x TR) data for this condition
+%         currSubData = mean(data_ROIavg_control_allSubs(ROI_order,n_cropped_TRs+1:end-n_cropped_TRs,cond,control_reps_to_include,s),4);
+%         
+%         %Average the equivalent (ROI x TR) data across the other N subjects
+%         otherSubsData = mean(data_ROIavg_control_allSubs(ROI_order,n_cropped_TRs+1:end-n_cropped_TRs,cond,control_reps_to_include,otherSubs),4);
+%         avg_otherSubsData = mean(otherSubsData,5);
+%         
+%         ISFC_mat_control(:,:,cond,s) = corr(currSubData',avg_otherSubsData');
+%                 
+%     end    
+% end
 
 % %For each scramble condition, plot the group-averaged ISFC matrix
 % figsize = [100 100 1100 250]; 
@@ -110,11 +118,11 @@ end
 % 
 
 %For each scramble condition, plot schemaball figure
-lineColor = [0 1 0];
-nodeColor = [0 0 1];
-
-h = schemaball(mean(ISFC_mat_scramble(:,:,1,:),4), ROIs(ROI_order), lineColor, nodeColor); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); set(gcf, 'InvertHardcopy', 'off');
+% lineColor = [0 1 0];
+% nodeColor = [0 0 1];
+% 
+% h = schemaball(mean(ISFC_mat_scramble(:,:,1,:),4), ROIs(ROI_order), lineColor, nodeColor); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+% set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); set(gcf, 'InvertHardcopy', 'off');
 % print(gcf, '-dtiff', ['../figures/ISFC/ISFC_schemaball (scramble, 1B, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(scramble_reps_to_include) '.tif']);
 % 
 % h = schemaball(mean(ISFC_mat_scramble(:,:,2,:),4), ROIs(ROI_order), lineColor, nodeColor); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
