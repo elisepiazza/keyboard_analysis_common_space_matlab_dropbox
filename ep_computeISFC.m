@@ -4,9 +4,8 @@
 %For each condition, for each subject, extract their rep-averaged ROI x TR data and correlate with avg of others' ROI x TR data 
 
 clear;
-group = 'AM';
-nROIs = 10;
-
+group = 'M';
+nROIs = 14; %9, 10, 14, 15
 n_cropped_TRs = 10;
 
 %The exact reps you want to include
@@ -19,16 +18,16 @@ groups = {'AM', 'M', 'M', 'AM', 'M', 'AM', 'M', 'M', 'AM'};
 
 subjects = all_subjects(find(strcmp(groups,group))); nSubs = length(subjects);
 
-all_ROIs = {'AngularG', 'Cerebellum', 'HeschlsG', 'STG', 'MotorCortex', 'TPJ', 'PCC', 'Precuneus', 'A1', 'mPFC', 'Hipp', 'lTPJ', 'rTPJ', 'PMC', 'V1'}; 
-ROIs = all_ROIs(1:nROIs);
-
-if nROIs == 10
-    ROI_order = [9 3 4 5 6 1 7 8 10 2];
-elseif nROIs == 15
-    ROI_order = [9 3 4 5 12 13 6 1 7 14 8 10 11 15 2];
-end
-
 filepath = ['../../common_space_AFNI/reshaped_by_conditions/' preproc_params '/nROIs=' num2str(nROIs) '/sub-'];
+
+%Load an example file to get the ROIs
+load([filepath '103.mat']); %All possible ROIs: {'AngularG', 'Cerebellum', 'HeschlsG', 'STG', 'MotorCortex', 'TPJ', 'PCC', 'Precuneus', 'A1', 'mPFC', 'Hipp', 'lTPJ', 'rTPJ', 'PMC', 'V1'}; 
+
+%Reordered ROIs for plotting
+ROIs_in_correct_order = {'A1', 'HeschlsG', 'STG', 'MotorCortex', 'lTPJ', 'rTPJ', 'TPJ', 'AngularG', 'PCC', 'PMC', 'Precuneus', 'mPFC', 'Hipp', 'V1', 'Cerebellum'};
+
+[i, j] = ismember(ROIs_in_correct_order,ROIs); ROI_order = j(j>0);
+
 barcolor = [.9 .5 0];
 
 nTRs = 148; 
@@ -91,30 +90,30 @@ for cond = 1:n_control_cond
     end    
 end
 
-% %For each scramble condition, plot the group-averaged ISFC matrix
-% figsize = [100 100 1100 250]; 
-% figure('Units', 'pixels', 'Position', figsize);
-% subplot(1,4,1); imagesc(mean(ISFC_mat_scramble(:,:,1,:),4)); title('1B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
-% subplot(1,4,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('2B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
-% subplot(1,4,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('8B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
-% subplot(1,4,4); imagesc(mean(ISFC_mat_scramble(:,:,4,:),4)); title('I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);  
-% print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(scramble_reps_to_include) '.tif']);
-% 
-% %For each control condition, plot the group-averaged ISFC matrix
-% figsize = [100 100 800 250]; 
-% figure('Units', 'pixels', 'Position', figsize);
-% subplot(1,3,1); imagesc(mean(ISFC_mat_control(:,:,1,:),4)); title('I_N'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
-% subplot(1,3,2); imagesc(mean(ISFC_mat_control(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
-% subplot(1,3,3); imagesc(mean(ISFC_mat_control(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]); 
-% print(gcf, '-dtiff', ['../figures/ISFC/ISFC (control, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(control_reps_to_include) '.tif']);
-% 
+%For each scramble condition, plot the group-averaged ISFC matrix
+figsize = [100 100 1100 250]; 
+figure('Units', 'pixels', 'Position', figsize);
+subplot(1,4,1); imagesc(mean(ISFC_mat_scramble(:,:,1,:),4)); title('1B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
+subplot(1,4,2); imagesc(mean(ISFC_mat_scramble(:,:,2,:),4)); title('2B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
+subplot(1,4,3); imagesc(mean(ISFC_mat_scramble(:,:,3,:),4)); title('8B'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);
+subplot(1,4,4); imagesc(mean(ISFC_mat_scramble(:,:,4,:),4)); title('I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]);  
+print(gcf, '-dtiff', ['../figures/ISFC/ISFC (scramble, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(scramble_reps_to_include) '.tif']);
+
+%For each control condition, plot the group-averaged ISFC matrix
+figsize = [100 100 800 250]; 
+figure('Units', 'pixels', 'Position', figsize);
+subplot(1,3,1); imagesc(mean(ISFC_mat_control(:,:,1,:),4)); title('I_N'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); caxis([-.1 .4]); colorbar;
+subplot(1,3,2); imagesc(mean(ISFC_mat_control(:,:,2,:),4)); title('I_A'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;
+subplot(1,3,3); imagesc(mean(ISFC_mat_control(:,:,3,:),4)); title('I_I'); xlabel('ROIs'); ylabel('ROIs'); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); colorbar;
+print(gcf, '-dtiff', ['../figures/ISFC/ISFC (control, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(control_reps_to_include) '.tif']);
+
 
 %For each scramble condition, plot schemaball figure
-lineColor = [0 1 0];
-nodeColor = [0 0 1];
-
-h = schemaball(mean(ISFC_mat_scramble(:,:,1,:),4), ROIs(ROI_order), lineColor, nodeColor); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
-set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); set(gcf, 'InvertHardcopy', 'off');
+% lineColor = [0 1 0];
+% nodeColor = [0 0 1];
+% 
+% h = schemaball(mean(ISFC_mat_scramble(:,:,1,:),4), ROIs(ROI_order), lineColor, nodeColor); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
+% set(h.l(~isnan(h.l)), 'LineWidth', 3); set(h.s, 'MarkerEdgeColor', 'blue', 'LineWidth', 2, 'SizeData', 100); set(gcf, 'InvertHardcopy', 'off');
 % print(gcf, '-dtiff', ['../figures/ISFC/ISFC_schemaball (scramble, 1B, ' group ' group)_nROIs=' num2str(nROIs) '_nTRs_cropped=' num2str(n_cropped_TRs) '_rep' num2str(scramble_reps_to_include) '.tif']);
 % 
 % h = schemaball(mean(ISFC_mat_scramble(:,:,2,:),4), ROIs(ROI_order), lineColor, nodeColor); set(gca, 'FontSize', 16, 'FontName', 'Helvetica'); 
